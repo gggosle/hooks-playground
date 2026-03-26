@@ -34,7 +34,7 @@ export default function App() {
 
         fetchInitialTodos();
     }, []);
-    const handleAdd = () => {
+    const handleAdd = useCallback(() => {
         if (!text.trim()) return;
 
         const newTodo: Todo = {
@@ -52,7 +52,7 @@ export default function App() {
 
         setTodos(newTodos);
         setText('');
-    };
+    }, [text, todos]);
 
     const handleDelete = useCallback((id: string | number) => {
         setTodos(prev => prev.filter(todo => todo.id !== id));
