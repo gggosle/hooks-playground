@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { TodoItem, type Todo } from './TodoItem.tsx';
 import './App.css';
+import {useLocalStorage} from "./hooks/useLocalStorage.ts";
 
 export default function App() {
-    const [todos, setTodos] = useState<Todo[]>([]);
+    const [todos, setTodos] = useLocalStorage<Todo[]>('my-app-todos', []);
     const [text, setText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
@@ -32,8 +33,11 @@ export default function App() {
             }
         };
 
-        fetchInitialTodos();
+        if (todos.length === 0) {
+            fetchInitialTodos();
+        }
     }, []);
+
     const handleAdd = useCallback(() => {
         if (!text.trim()) return;
 
